@@ -1,6 +1,7 @@
 #ifdef USE_NTREG
 #pragma GCC diagnostic ignored "-Wformat"
 #pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
+#pragma GCC diagnostic ignored "-Wunused-result"
 /*
  * ntreg.c - Windows (NT and up) Registry Hive access library
  *           should be able to handle most basic functions:

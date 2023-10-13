@@ -419,6 +419,7 @@ int get_dword(struct hive *hdesc, int vofs, char *path, int exact);
 int put_buf2val(struct hive *hdesc, struct keyval *kv,
 		int vofs, char *path, int type, int exact );
 int put_dword(struct hive *hdesc, int vofs, char *path, int exact, int dword);
+int put_char( struct hive* hdesc, int vofs, char* path, int type, int exact, char* pData );
 void export_key(struct hive *hdesc, int nkofs, char *name, char *filename, char *prefix);
 void closeHive(struct hive *hdesc);
 int writeHive(struct hive *hdesc);

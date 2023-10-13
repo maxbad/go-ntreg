@@ -1,4 +1,6 @@
 #ifdef USE_NTREG
+#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
 /*
  * ntreg.c - Windows (NT and up) Registry Hive access library
  *           should be able to handle most basic functions:
@@ -2401,6 +2403,7 @@ int del_value(struct hive *hdesc, int nkofs, char *name, int exact)
  */
 
 #undef AKDEBUG
+#undef CMPDEBUG
 
 struct nk_key *add_key(struct hive *hdesc, int nkofs, char *name)
 {
@@ -2485,7 +2488,7 @@ struct nk_key *add_key(struct hive *hdesc, int nkofs, char *name)
 	  onkofs = oldli->hash[o].ofs_nk;
 	  onk = (struct nk_key *)(onkofs + hdesc->buffer + 0x1004);
 	  if (slot == -1) {
-#if 1
+#if CMPDEBUG
 	    printf("add_key: cmp <%s> with <%s>\n",name,onk->keyname);
 #endif
 
@@ -2526,7 +2529,7 @@ struct nk_key *add_key(struct hive *hdesc, int nkofs, char *name)
 	  onk = (struct nk_key *)(onkofs + hdesc->buffer + 0x1004);
 	  if (slot == -1) {
 
-#if 0
+#if CMPDEBUG
 	    printf("add_key: cmp <%s> with <%s>\n",name,onk->keyname);
 #endif
 	    cmp = strn_casecmp(name, onk->keyname, (namlen > onk->len_name) ? namlen : onk->len_name);
@@ -3148,6 +3151,32 @@ int put_dword(struct hive *hdesc, int vofs, char *path, int exact, int dword)
   FREE(kr);
 
   return(r);
+}
+
+int put_char( struct hive* hdesc, int vofs, char* path, int type, int exact, char* pData )
+{
+    int len;
+    char* widebuf     = NULL;
+    struct keyval* kr = NULL;
+    int r;
+
+    len     = strlen( pData );
+    len     = de_escape( pData, 0 );
+    widebuf = string_prog2regw( pData, strlen( pData ), &len );
+    len += 2;
+
+    ALLOC( kr, 1, len + 8 );
+    memcpy( &kr->data, widebuf, len );
+
+    FREE( widebuf );
+
+    kr->len = len;
+
+    r = put_buf2val( hdesc, kr, vofs, path, type, exact );
+
+    FREE( kr );
+
+    return ( r );
 }
 
 /* ================================================================ */
@@ -4227,6 +4256,7 @@ struct hive *openHive(char *filename, int mode)
   ALLOC(hdesc->buffer,1,hdesc->size);
 
   rt = 0;
+  errno = 0;
   do {  /* On some platforms read may not block, and read in chunks. handle that */
     r = read(hdesc->filedesc, hdesc->buffer + rt, hdesc->size - rt);
     rt += r;

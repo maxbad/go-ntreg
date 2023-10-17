@@ -3,6 +3,7 @@ package ntreg
 /*
 #if defined(USE_NTREG)
 #include <stdlib.h>
+#include <stdint.h>
 #include "ntreg.h"
 #endif
 */

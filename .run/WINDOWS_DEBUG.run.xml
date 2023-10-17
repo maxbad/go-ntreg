@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="WINDOWS/DEBUG" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="go-ntreg" />
+    <target name="@@@LOCAL@@@" />
+    <working_directory value="$PROJECT_DIR$/_example/service" />
+    <go_parameters value="-tags &quot;ntreg&quot;" />
+    <envs>
+      <env name="CGO_ENABLED" value="1" />
+      <env name="CC" value="D:\Tools\mingw-w64\mingw64\bin\gcc.exe" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/maxbad/go-ntreg/_example/service" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/_example/service/service.go" />
+    <option name="build_on_remote_target" value="true" />
+    <method v="2" />
+  </configuration>
+</component>

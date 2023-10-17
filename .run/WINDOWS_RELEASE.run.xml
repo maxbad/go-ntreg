@@ -1,11 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="RELEASE" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="WINDOWS/RELEASE" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="go-ntreg" />
-    <target name="WSL - Ubuntu" />
+    <target name="@@@LOCAL@@@" />
     <working_directory value="$PROJECT_DIR$/_example/service" />
-    <go_parameters value="-tags &quot;ntreg&quot; -ldflags '-s -w -extldflags &quot;-static&quot;' -o $FilePath$/bin/$FileName$" />
+    <go_parameters value="-tags &quot;ntreg&quot; -ldflags '-s -w -extldflags &quot;-static&quot;' -o $ProjectFileDir$/bin/$FileName$.exe" />
     <envs>
       <env name="CGO_ENABLED" value="1" />
+      <env name="CC" value="D:\Tools\mingw-w64\mingw64\bin\gcc.exe" />
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/maxbad/go-ntreg/_example/service" />

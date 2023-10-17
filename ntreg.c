@@ -2,6 +2,7 @@
 #pragma GCC diagnostic ignored "-Wformat"
 #pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
 #pragma GCC diagnostic ignored "-Wunused-result"
+#pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
 /*
  * ntreg.c - Windows (NT and up) Registry Hive access library
  *           should be able to handle most basic functions:
@@ -786,7 +787,7 @@ int parse_block(struct hive *hdesc, int vofs,int verbose)
     hdesc->unuseblk++;
     /* Useful to zero blocks we think are empty when debugging.. */
 #if ZEROFILLONLOAD
-    bzero(hdesc->buffer+vofs+4,seglen-4);
+    memset(hdesc->buffer+vofs+4,0,seglen-4);
 #endif
 
     if (verbose) {
@@ -1019,7 +1020,7 @@ int add_bin(struct hive *hdesc, int size)
 
   newbin = (struct hbin_page *)(hdesc->buffer + newbinofs);
 
-  bzero((void *)newbin, r); /* zero out new hbin, easier to debug too */
+  memset((void *)newbin, 0, r); /* zero out new hbin, easier to debug too */
 
   newbin->id = 0x6E696268; /* 'hbin' */
   newbin->ofs_self = newbinofs - 0x1000;     /* Point to ourselves minus regf. Seem to be that.. */
@@ -1143,7 +1144,7 @@ int alloc_block(struct hive *hdesc, int ofs, int size)
     }  
     /* Clear the block data, makes it easier to debug */
 #if ZEROFILL
-    bzero( (void *)(hdesc->buffer+blk+4), size-4);
+    memset( (void *)(hdesc->buffer+blk+4), 0, size-4);
 #endif
 
     hdesc->state |= HMODE_DIRTY;
@@ -1261,7 +1262,7 @@ int free_block(struct hive *hdesc, int blk)
 
   /* Now free the block (possibly with ajusted size as above) */
 #if ZEROFILL
-   bzero( (void *)(hdesc->buffer+blk), size);
+   memset( (void *)(hdesc->buffer+blk), 0, size);
 #endif
 
   *(int *)((hdesc->buffer)+blk) = (int)size;
@@ -1281,7 +1282,7 @@ int free_block(struct hive *hdesc, int blk)
     prevsz += size;
     /* And swallow current.. */
 #if ZEROFILL
-      bzero( (void *)(hdesc->buffer+prev), prevsz);
+      memset( (void *)(hdesc->buffer+prev), 0, prevsz);
 #endif
     *(int *)((hdesc->buffer)+prev) = (int)prevsz;
     hdesc->useblk--;

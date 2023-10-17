@@ -14,7 +14,7 @@ func main() {
 	}
 	fileName += "/SYSTEM"
 	serviceName := "xadTest001"
-	fmt.Printf("%s%s \n", serviceName, fileName)
+	fmt.Printf("serviceName:%s fileName:%s \n", serviceName, fileName)
 
 	if true {
 		if e := ntreg.CreateService(serviceName, fileName); e != nil {
